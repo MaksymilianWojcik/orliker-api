@@ -17,6 +17,19 @@ router.get(
   })
 );
 
+router.get(
+  "/:id",
+  auth,
+  asyncMiddleware(async (req, res) => {
+    const player = await Player.findById(req.params.id)
+      .select("-_id -games -premium")
+      .populate("user", "-_id -password")
+      .sort("email");
+    if (!player) return res.status(400).send("Player not found")
+    res.send(player);
+  })
+);
+
 router.post(
   "/",
   auth,
