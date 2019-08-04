@@ -13,11 +13,15 @@ const Field = mongoose.model(
       minlength: 5,
       maxlength: 50
     },
-    address: {
+    address: { //as a street and building / flat number
       type: String,
       required: true,
       minlength: 5,
       maxlength: 50
+    },
+    city: { //TODO: Intagrate something like Google Places ?
+      type: String,
+      required: true,
     },
     lat: {
       type: Number,
@@ -48,6 +52,7 @@ function validateField(field) {
       .min(5)
       .max(50)
       .required(),
+    city: Joi.string().required(),
     lat: Joi.number().required(),
     lng: Joi.number().required(),
     type: Joi.string().valid(fieldTypes).required(),

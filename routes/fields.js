@@ -28,7 +28,7 @@ router.post(
       return res
         .status(400)
         .send(Response.fieldAddedErrorResponse(error.details[0].message));
-    const field = new Field(_.pick(req.body, ["name", "address", "lat", "lng", "type"]))
+    const field = new Field(_.pick(req.body, ["name", "address", "city", "lat", "lng", "type"]))
     const result = await field.save();
     console.log(result);
     res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
