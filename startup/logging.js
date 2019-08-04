@@ -12,7 +12,8 @@ module.exports = function() {
   });
 
   const file = new winston.transports.File({
-    filename: 'logfile.log'
+    filename: 'logfile.log',
+    level: 'error'
   });
 
   winston.add(file);
