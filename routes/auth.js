@@ -2,7 +2,7 @@ const _ = require("lodash");
 const Bcrypt = require("bcryptjs");
 const express = require("express");
 const { User, validate } = require("../models/user");
-const Responses = require("../utils/responses");
+const Response = require("../utils/responses");
 const asyncMiddleware = require("../middleware/async");
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post(
     if (error)
       return res
         .status(400)
-        .send(Responses.fieldAddedErrorResponse(error.details[0].message));
+        .send(Response.fieldAddedErrorResponse(error.details[0].message));
 
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send("User already registered");
@@ -42,7 +42,7 @@ router.post(
     if (error)
       return res
         .status(400)
-        .send(Responses.fieldAddedErrorResponse(error.details[0].message));
+        .send(Response.fieldAddedErrorResponse(error.details[0].message));
 
     const user = await User.findOne({ email: req.body.email });
     if (!user) {

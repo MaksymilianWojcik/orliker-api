@@ -3,7 +3,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const asyncMiddleware = require("../middleware/async");
 const { Field, validate } = require("../models/field");
-const Responses = require("../utils/responses");
+const Response = require("../utils/responses");
 
 const router = express.Router();
 
@@ -27,11 +27,11 @@ router.post(
     if (error)
       return res
         .status(400)
-        .send(Responses.fieldAddedErrorResponse(error.details[0].message));
+        .send(Response.fieldAddedErrorResponse(error.details[0].message));
     const field = new Field(_.pick(req.body, ["name", "address", "lat", "lng", "type"]))
     const result = await field.save();
     console.log(result);
-    res.status(200).send(Responses.fieldAddedSuccessResponse(result._id));
+    res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
   })
 );
 
