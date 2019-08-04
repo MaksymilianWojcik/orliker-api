@@ -28,4 +28,16 @@ router.get(
   })
 );
 
+router.get(
+  "/:id",
+  // auth,
+  asyncMiddleware(async (req, res) => {
+    const player = await User.findById(req.params.id)
+      .select("-_id -password")
+      .sort("email");
+    if (!player) return res.status(400).send("Player not found")
+    res.send(player);
+  })
+);
+
 module.exports = router;

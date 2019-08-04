@@ -19,8 +19,28 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 255
   },
-  isAdmin: Boolean
+  isAdmin: Boolean,
   //roles: [String] or operations: ['delete', 'add'] etc
+  nickname: {
+    type: String,
+    required: true,
+    minLength: 5,
+    maxlength: 25
+  },
+  respect: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  premium: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  games: {
+    type: [mongoose.Schema.Types.ObjectId],
+    required: false
+  },
 });
 
 userSchema.methods.generateAuthToken = function() {
@@ -32,7 +52,7 @@ userSchema.methods.generateAuthToken = function() {
 
 const User = mongoose.model("User", userSchema);
 
-function validateUser(player) {
+function validateUser(user) {
   const schema = {
     email: Joi.string()
       .email({ minDomainAtoms: 2 })
@@ -40,9 +60,13 @@ function validateUser(player) {
     password: Joi.string()
       .regex(/^[a-zA-Z0-9]{3,30}$/)
       .required(),
-    token: Joi.string() //[Joi.string(), Joi.number()], //string or number
+    token: Joi.string(), //[Joi.string(), Joi.number()], //string or number
+    nickname: Joi.string().min(5).max(25),
+    respect: Joi.number().default(0),
+    premium: Joi.boolean().default(false),
+    games: Joi.array().items(Joi.objectId()),
   };
-  return Joi.validate(player, schema);
+  return Joi.validate(user, schema);
 }
 
 exports.User = User;
@@ -62,3 +86,17 @@ _id: 5a734574ag74347567841e6a
   const timestamp = id.getTimestamp();
   const isValid = mongoose.Types.ObjectId.isValid('1234') //ofc this is not valid, we will get fasle 
 */
+
+
+// async function addGameToGamesArray(playerId, game /*or gameId*/){
+//   const player = await Player.findById(playerId);
+//   course.games.push(game)
+//   player.save();
+// }
+
+// async function removeGameFromGamesArray(playerId, gameId){
+//   const player = await Player.findById(playerId);
+//   const game = course.games.id(gameId)
+//   game.remove();
+//   player.save();
+// }

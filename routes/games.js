@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 const asyncMiddleware = require("../middleware/async");
 const { Game, validate, validateUpdate } = require("../models/game");
 const { Field } = require("../models/field");
-const { Player } = require("../models/player");
+const { User } = require("../models/user");
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.post(
     const field = await Field.findById(req.body.fieldId);
     if (!field) return res.status(400).send("Invalid field id");
 
-    const owner = await Player.findById(req.body.ownerId);
+    const owner = await User.findById(req.body.ownerId);
     if (!owner) return res.status(400).send("Invalid owner id");
 
     game = new Game({
@@ -54,7 +54,7 @@ router.put(
     const { error } = validateUpdate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let player = await Player.findById(req.body.playerId);
+    let player = await User.findById(req.body.playerId);
     if (!player) return res.status(400).send("Invalid player id");
 
     const game = await Game.findByIdAndUpdate(
@@ -82,7 +82,7 @@ router.put(
     const { error } = validateUpdate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let player = await Player.findById(req.body.playerId);
+    let player = await User.findById(req.body.playerId);
     if (!player) return res.status(400).send("Invalid player id");
 
     const game = await Game.findByIdAndUpdate(

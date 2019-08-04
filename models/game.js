@@ -24,7 +24,7 @@ const Game = mongoose.model(
     },
     players: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: 'Player',
+      ref: 'User',
     },
     field: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,7 +39,7 @@ const Game = mongoose.model(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Player'
+      ref: 'User'
     }
   })
 );
