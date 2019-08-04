@@ -242,3 +242,5 @@
 {"message":"Listening on port 3000 with env: development","level":"info"}
 {"message":"Connected to MongoDB...","level":"info"}
 {"level":"error","message":"Powinno byc gitPowinno byc git","stack":"Error: Powinno byc git\n    at Timeout.setTimeout [as _onTimeout] (/Users/m.wojcik/ws-learning/node/orliker/index.js:12:25)\n    at ontimeout (timers.js:436:11)\n    at tryOnTimeout (timers.js:300:5)\n    at listOnTimeout (timers.js:263:5)\n    at Timer.processTimers (timers.js:223:10)"}
+{"message":"Listening on port 3000 with env: development","level":"info"}
+{"message":"Connected to MongoDB...","level":"info"}
