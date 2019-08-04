@@ -22,19 +22,27 @@ const Game = mongoose.model(
       min: 1,
       max: 18,
     },
+    minRespect: {
+      type: Number,
+      required: false,
+    },
     players: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: 'User',
     },
-    field: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'Field'
-    },
+    // field: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   required: true,
+    //   ref: 'Field'
+    // },
     private: {
       type: Boolean,
       required: true,
       default: false
+    },
+    password: {
+      type: String,
+      required: function() { return this.private }
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -50,9 +58,14 @@ function validateGame(game) {
     maxPlayers: Joi.number().min(2).max(18).required(),
     minPlayers: Joi.number().min(1).max(18).required(),
     players: Joi.array().items(Joi.objectId()),
-    fieldId: Joi.objectId().required(),
+    // fieldId: Joi.objectId().required(),
     private: Joi.boolean().required(),
     ownerId: Joi.objectId().required(),
+    password: Joi.when('private', {
+      is: Joi.boolean().valid(true).required(),
+      then: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+      otherwise: Joi.forbidden(),
+    })
   };
   return Joi.validate(game, schema);
 }

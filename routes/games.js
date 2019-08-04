@@ -39,6 +39,7 @@ router.post(
       minPlayers: req.body.minPlayers,
       field: req.body.fieldId,
       private: req.body.private,
+      password: req.body.password,
       owner: req.body.ownerId
     });
 
