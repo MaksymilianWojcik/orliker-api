@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const express = require("express");
 const auth = require("../middleware/auth");
 const asyncMiddleware = require("../middleware/async");
@@ -23,13 +24,16 @@ router.post(
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const field = Field.findById(req.body.fieldId);
+    let game = await Game.findOne({ name: req.body.name }); //TODO: do we want game id to be unique?
+    if (game) return res.status(400).send('Game with this name already registered')
+
+    const field = await Field.findById(req.body.fieldId);
     if (!field) return res.status(400).send("Invalid field id");
 
-    const onwer = Field.findById(req.body.onwerId);
-    if (!onwer) return res.status(400).send("Invalid owner id");
+    const owner = await Player.findById(req.body.ownerId);
+    if (!owner) return res.status(400).send("Invalid owner id");
 
-    const game = new Game({
+    game = new Game({
       name: req.body.name,
       maxPlayers: req.body.maxPlayers,
       minPlayers: req.body.minPlayers,
@@ -37,6 +41,7 @@ router.post(
       private: req.body.private,
       owner: req.body.ownerId
     });
+
     await game.save();
     res.send(game);
   })
