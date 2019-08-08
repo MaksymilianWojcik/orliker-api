@@ -1,5 +1,5 @@
-const Joi = require("joi");
-const mongoose = require("mongoose");
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
 const Game = mongoose.model(
   'Game',
@@ -30,11 +30,11 @@ const Game = mongoose.model(
       type: [mongoose.Schema.Types.ObjectId],
       ref: 'User',
     },
-    // field: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   required: true,
-    //   ref: 'Field'
-    // },
+    field: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Field'
+    },
     private: {
       type: Boolean,
       required: true,
@@ -42,7 +42,7 @@ const Game = mongoose.model(
     },
     password: {
       type: String,
-      required: function() { return this.private }
+      required: function() { return this.private; }
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -58,7 +58,7 @@ function validateGame(game) {
     maxPlayers: Joi.number().min(2).max(18).required(),
     minPlayers: Joi.number().min(1).max(18).required(),
     players: Joi.array().items(Joi.objectId()),
-    // fieldId: Joi.objectId().required(),
+    fieldId: Joi.objectId().required(),
     private: Joi.boolean().required(),
     ownerId: Joi.objectId().required(),
     password: Joi.when('private', {
@@ -78,6 +78,6 @@ function validateGameUpdate(game) {
   return Joi.validate(game, schema);
 }
 
-exports.Game = Game;
-exports.validate = validateGame;
-exports.validateUpdate = validateGameUpdate;
+module.exports.Game = Game;
+module.exports.validate = validateGame;
+module.exports.validateUpdate = validateGameUpdate;

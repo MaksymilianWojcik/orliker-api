@@ -5,5 +5,5 @@ module.exports = function asyncMiddleware(handler) {
     } catch (ex) {
       next(ex);
     }
-  }
+  };
 };

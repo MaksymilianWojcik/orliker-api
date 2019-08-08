@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');

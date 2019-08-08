@@ -1,11 +1,11 @@
-const Joi = require("joi");
-const mongoose = require("mongoose");
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
 //soft moody field, natural grass, artifical grass, hard dry pitch, artificial turf, street soccer
 const fieldTypes = ['SMF', 'NG', 'AG', 'HDP', 'AT', 'SS'];
 
 const Field = mongoose.model(
-  "Field",
+  'Field',
   new mongoose.Schema({
     name: {
       type: String,
@@ -60,5 +60,5 @@ function validateField(field) {
   return Joi.validate(field, schema);
 }
 
-exports.Field = Field;
-exports.validate = validateField;
+module.exports.Field = Field;
+module.exports.validate = validateField;

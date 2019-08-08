@@ -3,16 +3,16 @@ const Response = {
         return {
             code: 200,
             id: id,
-            message: "Field added successfully",
+            message: 'Field added successfully',
             date: new Date().getTime()
-        }
+        };
     },
     fieldAddedErrorResponse: errorMessage => {
         return {
             code: 400,
-            message: errorMessage || "Error adding field",
+            message: errorMessage || 'Error adding field',
             date: new Date().getTime()
-        }
+        };
     },
 
     code: {
@@ -27,6 +27,6 @@ const Response = {
         REQUES_TIMEOUT: 408,
         INTERNAL_SERVER_ERROR: 500,
     }
-}
+};
 
-module.exports = Response
+module.exports = Response;

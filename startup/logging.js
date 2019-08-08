@@ -1,13 +1,14 @@
-const winston = require("winston");
+const winston = require('winston');
 
 module.exports = function() {
 
-  process.on("uncaughtException", ex => {
+  process.on('uncaughtException', ex => {
     winston.error(ex.message, ex);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   });
 
-  process.on("unhandledRejection", ex => {
+  process.on('unhandledRejection', ex => {
     throw ex;
   });
 

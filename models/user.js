@@ -1,9 +1,9 @@
-const Joi = require("joi");
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+const Joi = require('joi');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-mongoose.set("useCreateIndex", true);
+mongoose.set('useCreateIndex', true);
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -46,11 +46,11 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = function() {
   return jwt.sign(
     { _id: this._id, email: this.email },
-    config.get("jwtPrivateKey")
+    config.get('jwtPrivateKey')
   );
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
   const schema = {
@@ -69,8 +69,8 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
-exports.User = User;
-exports.validate = validateUser;
+module.exports.User = User;
+module.exports.validate = validateUser;
 
 /*
 _id: 5a734574ag74347567841e6a

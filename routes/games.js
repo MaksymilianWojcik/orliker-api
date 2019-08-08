@@ -1,24 +1,23 @@
-const _ = require("lodash");
-const express = require("express");
-const auth = require("../middleware/auth");
-const asyncMiddleware = require("../middleware/async");
-const { Game, validate, validateUpdate } = require("../models/game");
-const { Field } = require("../models/field");
-const { User } = require("../models/user");
+const express = require('express');
+const auth = require('../middleware/auth');
+const asyncMiddleware = require('../middleware/async');
+const { Game, validate, validateUpdate } = require('../models/game');
+const { Field } = require('../models/field');
+const { User } = require('../models/user');
 
 const router = express.Router();
 
 router.get(
-  "/",
+  '/',
   auth,
   asyncMiddleware(async (req, res) => {
-    const games = await Game.find().sort("name");
+    const games = await Game.find().sort('name');
     res.status(200).send(games);
   })
 );
 
 router.post(
-  "/",
+  '/',
   auth,
   asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
@@ -28,10 +27,10 @@ router.post(
     if (game) return res.status(400).send('Game with this name already registered')
 
     const field = await Field.findById(req.body.fieldId);
-    if (!field) return res.status(400).send("Invalid field id");
+    if (!field) return res.status(400).send('Invalid field id');
 
     const owner = await User.findById(req.body.ownerId);
-    if (!owner) return res.status(400).send("Invalid owner id");
+    if (!owner) return res.status(400).send('Invalid owner id');
 
     game = new Game({
       name: req.body.name,
@@ -49,14 +48,14 @@ router.post(
 );
 
 router.put(
-  "/joingame",
+  '/joingame',
   auth,
   asyncMiddleware(async (req, res) => {
     const { error } = validateUpdate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     let player = await User.findById(req.body.playerId);
-    if (!player) return res.status(400).send("Invalid player id");
+    if (!player) return res.status(400).send('Invalid player id');
 
     const game = await Game.findByIdAndUpdate(
       req.body.gameId,
@@ -70,21 +69,21 @@ router.put(
     if (!game)
       return res
         .status(400)
-        .send("Invalid game id, cannot add player to the game");
+        .send('Invalid game id, cannot add player to the game');
 
     res.status(200).send(game);
   })
 );
 
 router.put(
-  "/exitgame",
+  '/exitgame',
   auth,
   asyncMiddleware(async (req, res) => {
     const { error } = validateUpdate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     let player = await User.findById(req.body.playerId);
-    if (!player) return res.status(400).send("Invalid player id");
+    if (!player) return res.status(400).send('Invalid player id');
 
     const game = await Game.findByIdAndUpdate(
       req.body.gameId,
@@ -100,7 +99,7 @@ router.put(
     if (!game)
       return res
         .status(400)
-        .send("Invalid game id, cannot remove player from the game");
+        .send('Invalid game id, cannot remove player from the game');
 
     // is it safe?
     // game.players.push(player._id);
