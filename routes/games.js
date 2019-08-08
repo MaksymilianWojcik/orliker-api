@@ -24,7 +24,7 @@ router.post(
     if (error) return res.status(400).send(error.details[0].message);
 
     let game = await Game.findOne({ name: req.body.name }); //TODO: do we want game id to be unique?
-    if (game) return res.status(400).send('Game with this name already registered')
+    if (game) return res.status(400).send('Game with this name already registered');
 
     const field = await Field.findById(req.body.fieldId);
     if (!field) return res.status(400).send('Invalid field id');

@@ -69,8 +69,18 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
+//TODO: should create and move this to separate auth model? (even tho not storing in db?)
+function validateAuth(user) {
+  const schema = {
+    email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required()
+  };
+  return Joi.validate(user, schema);
+}
+
 module.exports.User = User;
 module.exports.validate = validateUser;
+module.exports.validateAuth = validateAuth;
 
 /*
 _id: 5a734574ag74347567841e6a

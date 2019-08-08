@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const Bcrypt = require('bcryptjs');
 const express = require('express');
-const { User, validate } = require('../models/user');
+const { User, validateAuth } = require('../models/user');
 const Response = require('../utils/responses');
 const asyncMiddleware = require('../middleware/async');
 const router = express.Router();
@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   '/register',
   asyncMiddleware(async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateAuth(req.body);
     if (error)
       return res
         .status(400)
@@ -21,12 +21,11 @@ router.post(
     user = new User(_.pick(req.body, ['email', 'password']));
     const salt = await Bcrypt.genSalt(10);
     user.password = await Bcrypt.hash(user.password, salt);
-    //   const password = Bcrypt.hashSync(req.body.password, 10);
 
     const result = await user.save();
     console.log(result);
 
-    //if we want to immediately set token after registering
+    //we want to immediately set token after registering
     const token = user.generateAuthToken();
     res
       .status(200)
@@ -38,7 +37,7 @@ router.post(
 router.post(
   '/login',
   asyncMiddleware(async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateAuth(req.body);
     if (error)
       return res
         .status(400)
