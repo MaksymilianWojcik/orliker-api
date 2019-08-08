@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest --watchAll --verbose",
     "start": "nodemon index.js"
   },
@@ -24,6 +25,8 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-plugin-node": "^9.1.0",
     "jest": "^24.8.0"
   }
 }
