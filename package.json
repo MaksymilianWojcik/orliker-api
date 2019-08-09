@@ -6,7 +6,9 @@
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest --watchAll --verbose",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "lint": "eslint '**/*.js' --fix",
+    "format": "prettier-eslint '**/*.{js,json}' --write"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +28,11 @@
   },
   "devDependencies": {
     "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^9.1.0",
-    "jest": "^24.8.0"
+    "eslint-plugin-promise": "^4.2.1",
+    "jest": "^24.8.0",
+    "prettier-eslint-cli": "^5.0.0"
   }
 }

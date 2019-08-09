@@ -11,43 +11,41 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
     minlength: 5,
-    maxlength: 50
+    maxlength: 50,
   },
   password: {
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 255
+    maxlength: 255,
   },
   isAdmin: Boolean,
-  //roles: [String] or operations: ['delete', 'add'] etc
+  // roles: [String] or operations: ['delete', 'add'] etc
   nickname: {
     type: String,
     required: true,
     minLength: 5,
-    maxlength: 25
+    maxlength: 25,
   },
   respect: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
   },
   premium: {
     type: Boolean,
     required: false,
-    default: false
+    default: false,
   },
   games: {
     type: [mongoose.Schema.Types.ObjectId],
-    required: false
+    required: false,
   },
 });
 
-userSchema.methods.generateAuthToken = function() {
-  return jwt.sign(
-    { _id: this._id, email: this.email },
-    config.get('jwtPrivateKey')
-  );
+// eslint-disable-next-line func-names
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ _id: this._id, email: this.email }, config.get('jwtPrivateKey'));
 };
 
 const User = mongoose.model('User', userSchema);
@@ -60,8 +58,10 @@ function validateUser(user) {
     password: Joi.string()
       .regex(/^[a-zA-Z0-9]{3,30}$/)
       .required(),
-    token: Joi.string(), //[Joi.string(), Joi.number()], //string or number
-    nickname: Joi.string().min(5).max(25),
+    token: Joi.string(), // [Joi.string(), Joi.number()], //string or number
+    nickname: Joi.string()
+      .min(5)
+      .max(25),
     respect: Joi.number().default(0),
     premium: Joi.boolean().default(false),
     games: Joi.array().items(Joi.objectId()),
@@ -69,11 +69,15 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
-//TODO: should create and move this to separate auth model? (even tho not storing in db?)
+// TODO: should create and move this to separate auth model? (even tho not storing in db?)
 function validateAuth(user) {
   const schema = {
-    email: Joi.string().email({ minDomainAtoms: 2 }).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required()
+    email: Joi.string()
+      .email({ minDomainAtoms: 2 })
+      .required(),
+    password: Joi.string()
+      .regex(/^[a-zA-Z0-9]{3,30}$/)
+      .required(),
   };
   return Joi.validate(user, schema);
 }
@@ -94,9 +98,8 @@ _id: 5a734574ag74347567841e6a
   //we can geenrate new id like this
   const id = new mongoose.Types.ObjectId();
   const timestamp = id.getTimestamp();
-  const isValid = mongoose.Types.ObjectId.isValid('1234') //ofc this is not valid, we will get fasle 
+const isValid = mongoose.Types.ObjectId.isValid('1234') //ofc this is not valid, we will get fasle
 */
-
 
 // async function addGameToGamesArray(playerId, game /*or gameId*/){
 //   const player = await Player.findById(playerId);

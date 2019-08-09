@@ -7,14 +7,14 @@ const Response = require('../utils/responses');
 
 const router = express.Router();
 
-//TODO: add try catch on awaits to handle promise rejection, which will shut down the app
+// TODO: add try catch on awaits to handle promise rejection, which will shut down the app
 router.get(
   '/',
   auth,
   asyncMiddleware(async (req, res) => {
     const fields = await Field.find().sort('name');
     res.status(200).send(fields);
-  })
+  }),
 );
 
 router.post(
@@ -23,16 +23,16 @@ router.post(
   asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
 
-    //because of asyncMIddleware this whole block can be removed, cause our error will jump to error midleware
-    if (error)
-      return res
-        .status(400)
-        .send(Response.fieldAddedErrorResponse(error.details[0].message));
-    const field = new Field(_.pick(req.body, ['name', 'address', 'city', 'lat', 'lng', 'type']))
+    // because of asyncMIddleware this whole block can be removed, cause our error will jump
+    // to error midleware
+    if (error) {
+      return res.status(400).send(Response.fieldAddedErrorResponse(error.details[0].message));
+    }
+    const field = new Field(_.pick(req.body, ['name', 'address', 'city', 'lat', 'lng', 'type']));
     const result = await field.save();
     console.log(result);
-    res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
-  })
+    return res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
+  }),
 );
 
 module.exports = router;
