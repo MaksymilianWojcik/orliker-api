@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
   // roles: [String] or operations: ['delete', 'add'] etc
   nickname: {
     type: String,
-    required: true,
     minLength: 5,
     maxlength: 25,
   },
@@ -82,9 +81,26 @@ function validateAuth(user) {
   return Joi.validate(user, schema);
 }
 
+function validatePasswordChange(user) {
+  const schema = {
+    email: Joi.string()
+      .email({ minDomainAtoms: 2 })
+      .required(),
+    oldpassword: Joi.string()
+      .regex(/^[a-zA-Z0-9]{3,30}$/)
+      .required(),
+    newpassword: Joi.string()
+      // .equal(this.oldpassword) // TODO: check if it works
+      .regex(/^[a-zA-Z0-9]{3,30}$/)
+      .required(),
+  };
+  return Joi.validate(user, schema);
+}
+
 module.exports.User = User;
 module.exports.validate = validateUser;
 module.exports.validateAuth = validateAuth;
+module.exports.validatePasswordChange = validatePasswordChange;
 
 /*
 _id: 5a734574ag74347567841e6a
