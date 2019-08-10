@@ -1,6 +1,6 @@
 {
-  "extends": "airbnb-base",
-  "plugins": ["promise"],
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["promise", "prettier"],
   "env": {
     "browser": true,
     "commonjs": true,
@@ -26,6 +26,7 @@
     "promise/no-promise-in-callback": "error",
     "promise/no-callback-in-promise": "error",
     "promise/no-return-in-finally": "error",
-    "prefer-arrow-callback": "error"
+    "prefer-arrow-callback": "error",
+    "prettier/prettier": ["error"]
   }
 }

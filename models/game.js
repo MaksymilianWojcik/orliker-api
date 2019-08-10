@@ -8,50 +8,50 @@ const Game = mongoose.model(
       type: String,
       required: true,
       minlength: 5,
-      maxlength: 25,
+      maxlength: 25
     },
     maxPlayers: {
       type: Number,
       required: true,
       min: 2,
-      max: 18,
+      max: 18
     },
     minPlayers: {
       type: Number,
       required: true,
       min: 1,
-      max: 18,
+      max: 18
     },
     minRespect: {
       type: Number,
-      required: false,
+      required: false
     },
     players: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: 'User',
+      ref: 'User'
     },
     field: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Field',
+      ref: 'Field'
     },
     private: {
       type: Boolean,
       required: true,
-      default: false,
+      default: false
     },
     password: {
       type: String,
       required() {
         return this.private;
-      }, // required: function() { return this.private }
+      } // required: function() { return this.private }
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
-    },
-  }),
+      ref: 'User'
+    }
+  })
 );
 
 function validateGame(game) {
@@ -82,8 +82,8 @@ function validateGame(game) {
       then: Joi.string()
         .regex(/^[a-zA-Z0-9]{3,30}$/)
         .required(),
-      otherwise: Joi.forbidden(),
-    }),
+      otherwise: Joi.forbidden()
+    })
   };
   return Joi.validate(game, schema);
 }
@@ -91,7 +91,7 @@ function validateGame(game) {
 function validateGameUpdate(game) {
   const schema = {
     playerId: Joi.objectId().required(),
-    gameId: Joi.objectId().required(),
+    gameId: Joi.objectId().required()
   };
   return Joi.validate(game, schema);
 }

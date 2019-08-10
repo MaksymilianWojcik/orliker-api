@@ -12,9 +12,12 @@ router.get(
   '/',
   auth,
   asyncMiddleware(async (req, res) => {
-    const games = await Game.find().select('-password').sort('name').populate('owner field', 'email name');
+    const games = await Game.find()
+      .select('-password')
+      .sort('name')
+      .populate('owner field', 'email name');
     res.status(200).send(games);
-  }),
+  })
 );
 
 router.post(
@@ -25,7 +28,8 @@ router.post(
     if (error) return res.status(400).send({ code: 400, message: error.details[0].message });
 
     let game = await Game.findOne({ name: req.body.name });
-    if (game) return res.status(400).send({ code: 400, message: 'Game with this name already registered' });
+    if (game)
+      return res.status(400).send({ code: 400, message: 'Game with this name already registered' });
 
     const field = await Field.findById(req.body.fieldId);
     if (!field) return res.status(400).send({ code: 400, message: 'Invalid field id' });
@@ -40,13 +44,21 @@ router.post(
       field: req.body.fieldId,
       private: req.body.private,
       password: req.body.password,
-      owner: req.body.ownerId,
+      owner: req.body.ownerId
     });
 
     game = await game.save();
-    const result = _.pick(game, ['_id', 'name', 'maxPlayers', 'minPlayers', 'field', 'private', 'owner']);
+    const result = _.pick(game, [
+      '_id',
+      'name',
+      'maxPlayers',
+      'minPlayers',
+      'field',
+      'private',
+      'owner'
+    ]);
     return res.send(result);
-  }),
+  })
 );
 
 router.put(
@@ -67,20 +79,21 @@ router.put(
     game = await Game.findByIdAndUpdate(
       { _id: req.body.gameId },
       {
-        $addToSet: { // $addToSet - for unique values, not like $push
-          players: player._id,
-        },
+        $addToSet: {
+          // $addToSet - for unique values, not like $push
+          players: player._id
+        }
       },
-      { new: true },
+      { new: true }
     ).select('-password');
     if (!game) {
-      return res.status(400).send({ code: 400, message: 'Game doesn\'t exist' });
+      return res.status(400).send({ code: 400, message: "Game doesn't exist" });
     }
 
     // TODO: update also user 'games' field
 
     return res.status(200).send(game);
-  }),
+  })
 );
 
 router.put(
@@ -98,11 +111,11 @@ router.put(
       {
         $pull: {
           players: {
-            $in: [player._id],
-          },
-        },
+            $in: [player._id]
+          }
+        }
       },
-      { new: true },
+      { new: true }
     ).select('-password');
     if (!game) {
       return res.status(400).send('Invalid game id, cannot remove player from the game');
@@ -112,7 +125,7 @@ router.put(
     // game.players.push(player._id);
     // game.save();
     return res.status(200).send(game);
-  }),
+  })
 );
 
 module.exports = router;

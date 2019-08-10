@@ -14,7 +14,7 @@ router.get(
       .sort('name')
       .select('-password');
     res.send(users);
-  }),
+  })
 );
 
 router.get(
@@ -25,7 +25,7 @@ router.get(
     const user = await User.findById(req.user._id).select('-password');
     if (!user) return res.status(400).send({ code: 400, message: "Couldn'\t find user" });
     return res.send(user);
-  }),
+  })
 );
 
 router.get(
@@ -37,7 +37,7 @@ router.get(
       .sort('email');
     if (!user) return res.status(400).send({ code: 400, message: "Couldn'\t find user" });
     return res.send(user);
-  }),
+  })
 );
 
 module.exports = router;

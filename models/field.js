@@ -12,38 +12,38 @@ const Field = mongoose.model(
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 50,
+        maxlength: 50
       },
       address: {
         // as a street and building / flat number
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 50,
+        maxlength: 50
       },
       city: {
         // TODO: Intagrate something like Google Places ?
         type: String,
-        required: true,
+        required: true
       },
       lat: {
         type: Number,
-        required: true,
+        required: true
       },
       lng: {
         type: Number,
-        required: true,
+        required: true
       },
       type: {
         type: String,
         required: true,
-        enum: fieldTypes,
-      },
+        enum: fieldTypes
+      }
     },
     {
-      timestamps: true,
-    },
-  ),
+      timestamps: true
+    }
+  )
 );
 
 function validateField(field) {
@@ -61,7 +61,7 @@ function validateField(field) {
     lng: Joi.number().required(),
     type: Joi.string()
       .valid(fieldTypes)
-      .required(),
+      .required()
   };
   return Joi.validate(field, schema);
 }

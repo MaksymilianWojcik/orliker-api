@@ -3,6 +3,7 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
 const { Field, validate } = require('../models/field');
+
 const Response = require('../utils/responses');
 
 const router = express.Router();
@@ -13,7 +14,7 @@ router.get(
   asyncMiddleware(async (req, res) => {
     const fields = await Field.find().sort('name');
     res.status(200).send(fields);
-  }),
+  })
 );
 
 // TODO: think about the proper entities in this model, so we have uniqueness
@@ -31,7 +32,7 @@ router.post(
     const result = await field.save();
 
     return res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
-  }),
+  })
 );
 
 module.exports = router;

@@ -11,39 +11,39 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
     minlength: 5,
-    maxlength: 50,
+    maxlength: 50
   },
   password: {
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 255,
+    maxlength: 255
   },
   isAdmin: Boolean,
   // roles: [String] or operations: ['delete', 'add'] etc
   nickname: {
     type: String,
     minLength: 5,
-    maxlength: 25,
+    maxlength: 25
   },
   respect: {
     type: Number,
     required: true,
-    default: 0,
+    default: 0
   },
   premium: {
     type: Boolean,
     required: false,
-    default: false,
+    default: false
   },
   games: {
     type: [mongoose.Schema.Types.ObjectId],
-    required: false,
-  },
+    required: false
+  }
 });
 
 // eslint-disable-next-line func-names
-userSchema.methods.generateAuthToken = function () {
+userSchema.methods.generateAuthToken = function() {
   return jwt.sign({ _id: this._id, email: this.email }, config.get('jwtPrivateKey'));
 };
 
@@ -63,7 +63,7 @@ function validateUser(user) {
       .max(25),
     respect: Joi.number().default(0),
     premium: Joi.boolean().default(false),
-    games: Joi.array().items(Joi.objectId()),
+    games: Joi.array().items(Joi.objectId())
   };
   return Joi.validate(user, schema);
 }
@@ -76,7 +76,7 @@ function validateAuth(user) {
       .required(),
     password: Joi.string()
       .regex(/^[a-zA-Z0-9]{3,30}$/)
-      .required(),
+      .required()
   };
   return Joi.validate(user, schema);
 }
@@ -92,7 +92,7 @@ function validatePasswordChange(user) {
     newpassword: Joi.string()
       // .equal(this.oldpassword) // TODO: check if it works
       .regex(/^[a-zA-Z0-9]{3,30}$/)
-      .required(),
+      .required()
   };
   return Joi.validate(user, schema);
 }

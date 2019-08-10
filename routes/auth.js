@@ -29,7 +29,7 @@ router.post(
       .status(200)
       .header('x-auth-token', token)
       .send(_.pick(result, ['_id', 'email']));
-  }),
+  })
 );
 
 router.post(
@@ -56,7 +56,7 @@ router.post(
       .status(200)
       .header('x-auth-token', token)
       .send({ message: 'Succesfully logged in', token });
-  }),
+  })
 );
 
 router.put(
@@ -68,7 +68,9 @@ router.put(
     }
 
     if (req.body.oldpassword === req.body.newpassword) {
-      return res.status(400).send({ code: 400, error: 'New password must be different than the old one' });
+      return res
+        .status(400)
+        .send({ code: 400, error: 'New password must be different than the old one' });
     }
 
     let user = await User.findOne({ email: req.body.email }); // or by id?
@@ -84,18 +86,14 @@ router.put(
     const salt = await Bcrypt.genSalt(10);
     const newPassword = await Bcrypt.hash(req.body.newpassword, salt);
 
-    user = await User.updateOne(
-      { email: user.email },
-      { $set: { password: newPassword } },
-    ).exec();
+    user = await User.updateOne({ email: user.email }, { $set: { password: newPassword } }).exec();
 
     // user.password = newPassword;
     // user = await user.save();
 
     return res.status(200).send(user);
-  }),
+  })
 );
-
 
 // TODO: implement email sending
 router.get(
@@ -109,7 +107,7 @@ router.get(
 
     // TODO: here send an email with password
     return res.status(200).send('Email has been sent');
-  }),
+  })
 );
 
 module.exports = router;
