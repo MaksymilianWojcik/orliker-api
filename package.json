@@ -8,7 +8,7 @@
     "test": "jest --watchAll --verbose",
     "start": "nodemon index.js",
     "lint": "eslint '**/*.js' --fix",
-    "format": "prettier-eslint '**/*.{js,json}' --write"
+    "format": "prettier-eslint 'routes/auth.{js,json}' --write"
   },
   "keywords": [],
   "author": "",
