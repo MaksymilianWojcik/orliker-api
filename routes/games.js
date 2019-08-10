@@ -59,10 +59,15 @@ router.put(
     const player = await User.findById(req.body.playerId);
     if (!player) return res.status(400).send({ code: 400, message: 'Invalid player id' });
 
-    const game = await Game.findByIdAndUpdate(
-      req.body.gameId,
+    let game = await Game.findById(req.body.gameId);
+    if (game.players.includes(player._id)) {
+      return res.status(400).send({ code: 400, message: 'User already in the game' });
+    }
+    
+    game = await Game.findByIdAndUpdate(
+      { _id: req.body.gameId },
       {
-        $push: {
+        $addToSet: { // $addToSet - for unique values, not like $push
           players: player._id,
         },
       },
