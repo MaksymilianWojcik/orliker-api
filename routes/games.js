@@ -77,7 +77,6 @@ router.put(
       return res.status(400).send({ code: 400, message: 'Game doesn\'t exist' });
     }
 
-    // TODO: check if player is not already in the game
     // TODO: update also user 'games' field
 
     return res.status(200).send(game);
