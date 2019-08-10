@@ -7,7 +7,6 @@ const Response = require('../utils/responses');
 
 const router = express.Router();
 
-// TODO: add try catch on awaits to handle promise rejection, which will shut down the app
 router.get(
   '/',
   auth,
@@ -17,20 +16,20 @@ router.get(
   }),
 );
 
+// TODO: think about the proper entities in this model, so we have uniqueness
+// TODO: move addres to sepearate schema / model
 router.post(
-  '/',
+  '/add',
   auth,
   asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
-
-    // because of asyncMIddleware this whole block can be removed, cause our error will jump
-    // to error midleware
     if (error) {
       return res.status(400).send(Response.fieldAddedErrorResponse(error.details[0].message));
     }
+
     const field = new Field(_.pick(req.body, ['name', 'address', 'city', 'lat', 'lng', 'type']));
     const result = await field.save();
-    console.log(result);
+
     return res.status(200).send(Response.fieldAddedSuccessResponse(result._id));
   }),
 );
