@@ -68,6 +68,9 @@ function validateGame(game) {
       .min(1)
       .max(18)
       .required(),
+    minRespect: Joi.number()
+      .min(1)
+      .max(9999),
     players: Joi.array().items(Joi.objectId()),
     fieldId: Joi.objectId().required(),
     private: Joi.boolean().required(),

@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const express = require('express');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
@@ -11,27 +12,26 @@ router.get(
   '/',
   auth,
   asyncMiddleware(async (req, res) => {
-    const games = await Game.find().sort('name');
+    const games = await Game.find().select('-password').sort('name').populate('owner field', 'email name');
     res.status(200).send(games);
   }),
 );
 
 router.post(
-  '/',
+  '/add',
   auth,
   asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send({ code: 400, message: error.details[0].message });
 
-    // TODO: do we want game id to be unique?
     let game = await Game.findOne({ name: req.body.name });
-    if (game) return res.status(400).send('Game with this name already registered');
+    if (game) return res.status(400).send({ code: 400, message: 'Game with this name already registered' });
 
     const field = await Field.findById(req.body.fieldId);
-    if (!field) return res.status(400).send('Invalid field id');
+    if (!field) return res.status(400).send({ code: 400, message: 'Invalid field id' });
 
     const owner = await User.findById(req.body.ownerId);
-    if (!owner) return res.status(400).send('Invalid owner id');
+    if (!owner) return res.status(400).send({ code: 400, message: 'Invalid owner id' });
 
     game = new Game({
       name: req.body.name,
@@ -43,8 +43,9 @@ router.post(
       owner: req.body.ownerId,
     });
 
-    await game.save();
-    return res.send(game);
+    game = await game.save();
+    const result = _.pick(game, ['_id', 'name', 'maxPlayers', 'minPlayers', 'field', 'private', 'owner']);
+    return res.send(result);
   }),
 );
 
@@ -56,7 +57,7 @@ router.put(
     if (error) return res.status(400).send(error.details[0].message);
 
     const player = await User.findById(req.body.playerId);
-    if (!player) return res.status(400).send('Invalid player id');
+    if (!player) return res.status(400).send({ code: 400, message: 'Invalid player id' });
 
     const game = await Game.findByIdAndUpdate(
       req.body.gameId,
@@ -66,10 +67,13 @@ router.put(
         },
       },
       { new: true },
-    );
+    ).select('-password');
     if (!game) {
-      return res.status(400).send('Invalid game id, cannot add player to the game');
+      return res.status(400).send({ code: 400, message: 'Game doesn\'t exist' });
     }
+
+    // TODO: check if player is not already in the game
+    // TODO: update also user 'games' field
 
     return res.status(200).send(game);
   }),
@@ -95,7 +99,7 @@ router.put(
         },
       },
       { new: true },
-    );
+    ).select('-password');
     if (!game) {
       return res.status(400).send('Invalid game id, cannot remove player from the game');
     }
