@@ -10,6 +10,6 @@ module.exports = function authMiddleware(req, res, next) {
     req.user = decoded;
     return next();
   } catch (e) {
-    return res.status(400).send('Invalid token');
+    return res.status(400).send({ code: 400, message: 'Invalid token' });
   }
 };
