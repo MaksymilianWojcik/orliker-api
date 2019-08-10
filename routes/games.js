@@ -63,7 +63,7 @@ router.put(
     if (game.players.includes(player._id)) {
       return res.status(400).send({ code: 400, message: 'User already in the game' });
     }
-    
+
     game = await Game.findByIdAndUpdate(
       { _id: req.body.gameId },
       {
