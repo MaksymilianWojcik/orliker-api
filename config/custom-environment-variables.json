@@ -1,3 +1,5 @@
 {
-  "jwtPrivateKey": "orliker_jwtPrivateKey"
+  "jwtPrivateKey": "orliker_jwtPrivateKey",
+  "mongoPassword": "orliker_mongoPassword",
+  "mongoUser": "orliker_mongoUser"
 }
