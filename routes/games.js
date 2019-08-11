@@ -28,8 +28,9 @@ router.post(
     if (error) return res.status(400).send({ code: 400, message: error.details[0].message });
 
     let game = await Game.findOne({ name: req.body.name });
-    if (game)
+    if (game) {
       return res.status(400).send({ code: 400, message: 'Game with this name already registered' });
+    }
 
     const field = await Field.findById(req.body.fieldId);
     if (!field) return res.status(400).send({ code: 400, message: 'Invalid field id' });

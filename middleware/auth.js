@@ -3,8 +3,9 @@ const config = require('config');
 
 module.exports = function authMiddleware(req, res, next) {
   const token = req.header('x-auth-token');
-  if (!token)
+  if (!token) {
     return res.status(401).send({ code: 401, message: 'Access denied. No token provided.' }); // 401 - no auth credentials
+  }
 
   try {
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));

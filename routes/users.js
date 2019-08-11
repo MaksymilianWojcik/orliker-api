@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get(
   '/',
-  auth,
+  // auth,
   asyncMiddleware(async (req, res) => {
     const users = await User.find()
       .sort('name')
