@@ -5,9 +5,9 @@ module.exports = function initSocketIO(server) {
   websocket.on('connection', socket => {
     // For testing
     setInterval(() => {
-      socket.emit('message', 'yoyoyoyoyo');
+      socket.emit('api', 'yoyoyoyoyo from api');
     }, 10000);
-    websocket.on('disconnect', () => console.log('Client disconnected'));
-    websocket.on('message', message => console.log(message));
+    socket.on('disconnect', () => console.log('Client disconnected'));
+    socket.on('mobile', message => console.log(message));
   });
 };
