@@ -16,7 +16,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.2.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "helmet": "^3.18.0",
     "joi": "^14.3.1",
     "joi-objectid": "^2.0.0",
