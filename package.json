@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.2.1",
+    "config": "^3.3.8",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "joi": "^14.3.1",
